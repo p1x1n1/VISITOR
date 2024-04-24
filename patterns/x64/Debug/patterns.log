@@ -1,0 +1,35 @@
+﻿  patterns.cpp
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(12,23): error C2143: синтаксическая ошибка: отсутствие ";" перед "*"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(12,23): error C2433: Transformer::Expression: "virtual" не разрешается для объявлений данных
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(12,23): error C4430: отсутствует спецификатор типа - предполагается int. Примечание. C++ не поддерживает int по умолчанию
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(12,59): error C2238: непредвиденные лексемы перед ";"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(13,23): error C2143: синтаксическая ошибка: отсутствие ";" перед "*"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(13,23): error C2433: Transformer::Expression: "virtual" не разрешается для объявлений данных
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(13,23): error C4430: отсутствует спецификатор типа - предполагается int. Примечание. C++ не поддерживает int по умолчанию
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(13,77): error C2238: непредвиденные лексемы перед ";"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(14,23): error C2143: синтаксическая ошибка: отсутствие ";" перед "*"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(14,23): error C2433: Transformer::Expression: "virtual" не разрешается для объявлений данных
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(14,23): error C4430: отсутствует спецификатор типа - предполагается int. Примечание. C++ не поддерживает int по умолчанию
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(14,71): error C2238: непредвиденные лексемы перед ";"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(15,23): error C2143: синтаксическая ошибка: отсутствие ";" перед "*"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(15,23): error C2433: Transformer::Expression: "virtual" не разрешается для объявлений данных
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(15,23): error C4430: отсутствует спецификатор типа - предполагается int. Примечание. C++ не поддерживает int по умолчанию
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(15,63): error C2238: непредвиденные лексемы перед ";"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(18,15): error C2143: синтаксическая ошибка: отсутствие ";" перед "*"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(18,15): error C4430: отсутствует спецификатор типа - предполагается int. Примечание. C++ не поддерживает int по умолчанию
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(19,5): error C2334: непредвиденные лексемы перед "{"; пропуск вероятного тела функции
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(22,15): error C2143: синтаксическая ошибка: отсутствие ";" перед "*"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(22,15): error C4430: отсутствует спецификатор типа - предполагается int. Примечание. C++ не поддерживает int по умолчанию
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(23,5): error C2334: непредвиденные лексемы перед "{"; пропуск вероятного тела функции
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(26,15): error C2143: синтаксическая ошибка: отсутствие ";" перед "*"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(26,15): error C4430: отсутствует спецификатор типа - предполагается int. Примечание. C++ не поддерживает int по умолчанию
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(27,5): error C2334: непредвиденные лексемы перед "{"; пропуск вероятного тела функции
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(30,15): error C2143: синтаксическая ошибка: отсутствие ";" перед "*"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(30,15): error C4430: отсутствует спецификатор типа - предполагается int. Примечание. C++ не поддерживает int по умолчанию
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(31,5): error C2334: непредвиденные лексемы перед "{"; пропуск вероятного тела функции
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(55,20): error C2039: "transformNumber": не является членом "Transformer".
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(6): message : см. объявление "Transformer"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(98,20): error C2039: "transformBinaryOperation": не является членом "Transformer".
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(6): message : см. объявление "Transformer"
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(124,20): error C2039: "transformFunctionCall": не является членом "Transformer".
+C:\Users\1\OneDrive\Документы\вуз\3курс\MV\patterns\patterns\patterns.cpp(6): message : см. объявление "Transformer"
