@@ -27,6 +27,7 @@ struct Expression //базовая абстрактная структура п�
     virtual ~Expression() { } //виртуальный деструктор
     virtual double evaluate() const = 0; //абстрактный метод «вычислить»
     virtual Expression* transform(Transformer* tr) const = 0;//acceptVisitor
+    virtual void check() const=0;
 };
 
 struct Number : Expression // стуктура «Число»
@@ -39,7 +40,9 @@ struct Number : Expression // стуктура «Число»
     {
         return tr->transformNumber(this);
     }
-
+    void check() const {
+        std::cout << value_ << ' ';
+    }
 private:
     double value_; // само вещественное число
 };
@@ -82,6 +85,11 @@ struct BinaryOperation : Expression // «Бинарная операция»
     {
         return tr->transformBinaryOperation(this);
     }
+    void check() const {
+        left_->check();
+        std::cout << (char)op_<<' ';
+        right_->check();
+    }
     
 private:
     Expression const* left_; // указатель на левый операнд
@@ -117,6 +125,11 @@ struct FunctionCall : Expression // структура «Вызов функци
     {
         return tr->transformFunctionCall(this);
     }
+    void check() const {
+
+        std::cout << name_ << ' ';
+        arg_->check();
+    }
 private:
     std::string const name_; // имя функции
     Expression const* arg_; // указатель на ее аргумент
@@ -134,6 +147,9 @@ struct Variable : Expression // структура «Переменная»
     Expression* transform(Transformer* tr) const
     {
         return tr->transformVariable(this);
+    }
+    void check() const {
+        std::cout << name_ << ' ';
     }
 private:
     std::string const name_; // имя переменной
@@ -170,6 +186,51 @@ struct CopySyntaxTree : Transformer {
     ~CopySyntaxTree() { };
 };
 
+struct FoldConstants : Transformer//необходимо реализовать сворачивание констант в дереве(constant folding)
+{
+    Expression* transformNumber(Number const* number)
+    {
+        Expression* num = new Number(number->value());//новый объект с копией значения
+        return num;
+    }
+    Expression* transformBinaryOperation(BinaryOperation const* binop)
+    {
+        Expression* arg1 = binop->left()->transform(this);
+        Expression* arg2 = binop->right()->transform(this);
+        int op = binop->operation();
+        Number* is_num1 = dynamic_cast<Number*>(arg1);// проверка что выражение (Expression) на самом деле является числом(Number)
+        Number* is_num2 = dynamic_cast<Number*>(arg2);
+        Expression* binOp = new BinaryOperation(arg1, op, arg2);
+        if (is_num1 && is_num2) {//если оба выражения число то вычисляем значение 
+            Number* res = new Number(binOp->evaluate());
+            delete binOp;
+            return res;
+        }
+
+         else return binOp;
+    }
+    Expression* transformFunctionCall(FunctionCall const* fcall)
+    {
+        Expression* arg = fcall->arg()->transform(this);
+        std::string name = fcall->name();
+        Number* is_num = dynamic_cast<Number*>(arg);
+        Expression* funcctionC = new FunctionCall(name, arg);
+        if (is_num) {//если число то вычисляем значение 
+            Number* res = new Number(funcctionC->evaluate());
+            delete funcctionC;
+            return res;
+        }
+        else return funcctionC;
+    }
+    Expression* transformVariable(Variable const* var)
+    {
+        Expression* variable = new Variable(var->name());
+        return variable;
+    }
+    ~FoldConstants() { };
+};
+
+
 int main() {
     /*
     Expression* e1 = new Number(1.234);
@@ -192,7 +253,7 @@ int main() {
     std::cout << expression->evaluate() << std::endl;
     std::cout << new_expression->evaluate() << std::endl;*/
     //------------------------------------------------------------------------------
-    Number* n32 = new Number(32.0);
+   /* Number* n32 = new Number(32.0);
     Number* n16 = new Number(16.0);
     BinaryOperation* minus = new BinaryOperation(n32, BinaryOperation::MINUS, n16);
     FunctionCall* callSqrt = new FunctionCall("sqrt", minus);
@@ -213,7 +274,21 @@ int main() {
     std::cout << "newExpr " << newExpr->evaluate() << std::endl;
     newExpr = callSqrt->transform(&CST);
     std::cout << "callSqrt " << callSqrt->evaluate() << std::endl;
-    std::cout << "newExpr " << newExpr->evaluate() << std::endl;
+    std::cout << "newExpr " << newExpr->evaluate() << std::endl;*/
+    //------------------------------------------------------------------------------
+    Number* n32 = new Number(32.0);
+    Number* n16 = new Number(16.0);
+    BinaryOperation* minus = new BinaryOperation(n32, BinaryOperation::MINUS,
+        n16);
+    FunctionCall* callSqrt = new FunctionCall("sqrt", minus);
+    Variable* var = new Variable("var");
+    BinaryOperation* mult = new BinaryOperation(var, BinaryOperation::MUL,
+        callSqrt);
+    FunctionCall* callAbs = new FunctionCall("abs", mult);
+    FoldConstants FC;
+    Expression* newExpr = callAbs->transform(&FC);
+    newExpr->check();
+    std::cout << '\n';
 }
 
 /*
