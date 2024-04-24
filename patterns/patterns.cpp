@@ -3,7 +3,14 @@
 
 #include <iostream>
 #include <cassert>
-struct Transformer//это реализация паттерна проектирования Visitor
+
+struct Expression;
+struct BinaryOperation;
+struct Number;
+struct FunctionCall;
+struct Variable;
+
+struct Transformer //pattern Visitor
 {
     virtual ~Transformer() {}
     virtual Expression* transformNumber(Number const*) = 0;
@@ -11,25 +18,8 @@ struct Transformer//это реализация паттерна проекти�
     virtual Expression* transformFunctionCall(FunctionCall const*) = 0;
     virtual Expression* transformVariable(Variable const*) = 0;
 };
-struct CopySyntaxTree :Transformer {
-    Expression* transformNumber(Number const* number)
-    {
-        return;
-    }
-    Expression* transformBinaryOperation(BinaryOperation const* binop)
-    {
-        return;
-    }
-    Expression* transformFunctionCall(FunctionCall const* fcall)
-    {
-        return;
-    }
-    Expression* transformVariable(Variable const* var)
-    {
-        return ; 
-    }
 
-};
+
 
 struct Expression //базовая абстрактная структура представляет абстрактное
     //синтаксическое дерево(АСД)
@@ -92,6 +82,7 @@ struct BinaryOperation : Expression // «Бинарная операция»
     {
         return tr->transformBinaryOperation(this);
     }
+    
 private:
     Expression const* left_; // указатель на левый операнд
     Expression const* right_; // указатель на правый операнд
@@ -114,10 +105,7 @@ struct FunctionCall : Expression // структура «Вызов функци
     {
         return arg_;
     }
-    Expression* transform(Transformer* tr) const
-    {
-        return tr->transformFunctionCall(this);
-    }
+   
     ~FunctionCall() { delete arg_; } // освобождаем память в деструкторе
     virtual double evaluate() const { // реализация виртуального метода
         //«вычислить»
@@ -125,6 +113,10 @@ struct FunctionCall : Expression // структура «Вызов функци
             return sqrt(arg_->evaluate()); // либо вычисляем корень квадратный
         else return fabs(arg_->evaluate());
     } // либо модуль — остальные функции //запрещены
+    Expression* transform(Transformer* tr) const
+    {
+        return tr->transformFunctionCall(this);
+    }
 private:
     std::string const name_; // имя функции
     Expression const* arg_; // указатель на ее аргумент
@@ -139,29 +131,89 @@ struct Variable : Expression // структура «Переменная»
     {
         return 0.0;
     }
+    Expression* transform(Transformer* tr) const
+    {
+        return tr->transformVariable(this);
+    }
 private:
     std::string const name_; // имя переменной
 };
 
+struct CopySyntaxTree : Transformer {
+    Expression* transformNumber(Number const* number)
+    {
+        Expression* num = new Number(number->value());//новый объект с копией значения
+        return num;
+    }
+    Expression* transformBinaryOperation(BinaryOperation const* binop)
+    {
+        Expression* arg1 = binop->left()->transform(this);
+        Expression* arg2 = binop->right()->transform(this);
+        int op = binop->operation();
+        Expression* binOp = new BinaryOperation(arg1, op, arg2);
+
+        return binOp;
+    }
+    Expression* transformFunctionCall(FunctionCall const* fcall)
+    {
+        Expression* arg = fcall->arg()->transform(this);
+        std::string name = fcall->name();
+        Expression* funcctionC = new FunctionCall(name, arg);
+
+        return funcctionC;
+    }
+    Expression* transformVariable(Variable const* var)
+    {
+        Expression* variable = new Variable(var->name());
+        return variable;
+    }
+    ~CopySyntaxTree() { };
+};
+
 int main() {
+    /*
     Expression* e1 = new Number(1.234);
     Expression* e2 = new Number(-1.234);
     Expression* e3 = new BinaryOperation(e1, BinaryOperation::DIV, e2);
-    std::cout << e3->evaluate() << std::endl;
+    std::cout << e3->evaluate() << std::endl;*/
     //------------------------------------------------------------------------------
-    Expression* n32 = new Number(32.0);
+    /*Expression* n32 = new Number(32.0);
     Expression* n16 = new Number(16.0);
     Expression* minus = new BinaryOperation(n32, BinaryOperation::MINUS, n16);
     Expression* callSqrt = new FunctionCall("sqrt", minus);
     Expression* n2 = new Number(2.0);
     Expression* mult = new BinaryOperation(n2, BinaryOperation::MUL, callSqrt);
     Expression* callAbs = new FunctionCall("abs", mult);
-    std::cout << callAbs->evaluate() << std::endl;
+    std::cout << callAbs->evaluate() << std::endl;*/
     //------------------------------------------------------------------------------
-    Expression* expression = new Number(10.0);
+    /*Expression* expression = new Number(10.0);
     Transformer* transformer = new CopySyntaxTree();
     Expression* new_expression = expression->transform(transformer);
-
+    std::cout << expression->evaluate() << std::endl;
+    std::cout << new_expression->evaluate() << std::endl;*/
+    //------------------------------------------------------------------------------
+    Number* n32 = new Number(32.0);
+    Number* n16 = new Number(16.0);
+    BinaryOperation* minus = new BinaryOperation(n32, BinaryOperation::MINUS, n16);
+    FunctionCall* callSqrt = new FunctionCall("sqrt", minus);
+    Variable* var = new Variable("var");
+    BinaryOperation* mult = new BinaryOperation(var, BinaryOperation::MUL,
+        callSqrt);
+    FunctionCall* callAbs = new FunctionCall("abs", mult);
+    //std::cout << callAbs->evaluate() << std::endl;
+    CopySyntaxTree CST;
+    Expression* newExpr = callAbs->transform(&CST);
+    std::cout <<"callAbs " << callAbs->evaluate() << std::endl;
+    std::cout <<"newExpr " << newExpr->evaluate() << std::endl;
+    newExpr = var->transform(&CST);
+    std::cout << "var " << var->evaluate() << std::endl;
+    std::cout << "newExpr " << newExpr->evaluate() << std::endl;
+    newExpr = minus->transform(&CST);
+    std::cout << "minus " << minus->evaluate() << std::endl;
+    std::cout << "newExpr " << newExpr->evaluate() << std::endl;
+    newExpr = callSqrt->transform(&CST);
+    std::cout << "callSqrt " << callSqrt->evaluate() << std::endl;
+    std::cout << "newExpr " << newExpr->evaluate() << std::endl;
 }
 
 /*
